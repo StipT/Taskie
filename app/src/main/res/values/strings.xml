@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Taskie</string>
+    <string name="newTaskHeadingText">New task:</string>
+    <string name="newTaskTitleInputHint">Enter task title</string>
+    <string name="newTaskDescriptionInputHint">Enter task description</string>
+    <string name="lowPriority">Low</string>
+    <string name="mediumPriority">Medium</string>
+    <string name="highPriority">High</string>
+    <string name="saveTaskActionText">Save</string>
+    <string name="emptyFields">Check your inputs</string>
+    <string name="noTaskFound">No such task found</string>
+    <string name="no_data">No data! :(</string>
+    <string name="list_title">Task list</string>
+    <string name="about_title">About</string>
+    <string name="about_app_tab">About app</string>
+    <string name="about_me_tab">About me</string>
+    <string name="about_me_test_string">This is page about me</string>
+    <string name="about_me_text">My name is Tomislav and i make apps...</string>
+    <string name="about_app">This is my app... It\'s called Taskie</string>
+</resources>
