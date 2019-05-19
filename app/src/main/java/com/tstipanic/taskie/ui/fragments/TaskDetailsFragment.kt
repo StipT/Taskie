@@ -15,9 +15,8 @@ class TaskDetailsFragment : BaseFragment() {
     private val repository = Repository
     private var taskID = NO_TASK
 
-    override fun getLayoutResourceId(): Int {
-        return R.layout.fragment_task_details
-    }
+    override fun getLayoutResourceId(): Int = R.layout.fragment_task_details
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -10,7 +10,7 @@
     <string name="emptyFields">Check your inputs</string>
     <string name="noTaskFound">No such task found</string>
     <string name="no_data">No data! :(</string>
-    <string name="list_title">Task list</string>
+    <string name="list_title">List</string>
     <string name="about_title">About</string>
     <string name="about_app_tab">About app</string>
     <string name="about_me_tab">About me</string>

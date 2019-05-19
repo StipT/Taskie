@@ -15,12 +15,12 @@ import com.tstipanic.taskie.model.Task
 import com.tstipanic.taskie.persistance.Repository
 import kotlinx.android.synthetic.main.fragment_dialog_new_task.*
 
-class AddTaskFragmentDialog: DialogFragment() {
+class AddTaskFragmentDialog : DialogFragment() {
 
     private var taskAddedListener: TaskAddedListener? = null
     private val repository = Repository
 
-    interface TaskAddedListener{
+    interface TaskAddedListener {
         fun onTaskAdded(task: Task)
     }
 
@@ -28,13 +28,16 @@ class AddTaskFragmentDialog: DialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.FragmentDialogTheme)
     }
-    fun setTaskAddedListener(listener: TaskAddedListener){
+
+    fun setTaskAddedListener(listener: TaskAddedListener) {
         taskAddedListener = listener
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_dialog_new_task, container)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = inflater.inflate(R.layout.fragment_dialog_new_task, container)
 
     override fun onStart() {
         super.onStart()
@@ -47,19 +50,19 @@ class AddTaskFragmentDialog: DialogFragment() {
         initListeners()
     }
 
-    private fun initUi(){
+    private fun initUi() {
         context?.let {
             prioritySelector.adapter = ArrayAdapter<Priority>(it, R.layout.support_simple_spinner_dropdown_item, Priority.values())
             prioritySelector.setSelection(0)
         }
     }
 
-    private fun initListeners(){
-        saveTaskAction.setOnClickListener{ saveTask() }
+    private fun initListeners() {
+        saveTaskAction.setOnClickListener { saveTask() }
     }
 
     private fun saveTask() {
-        if (isInputEmpty()){
+        if (isInputEmpty()) {
             context?.displayToast(getString(R.string.emptyFields))
             return
         }
@@ -81,13 +84,10 @@ class AddTaskFragmentDialog: DialogFragment() {
         prioritySelector.setSelection(0)
     }
 
-    private fun isInputEmpty(): Boolean = TextUtils.isEmpty(newTaskTitleInput.text) || TextUtils.isEmpty(
-        newTaskDescriptionInput.text
-    )
+    private fun isInputEmpty(): Boolean =
+        TextUtils.isEmpty(newTaskTitleInput.text) || TextUtils.isEmpty(newTaskDescriptionInput.text)
 
-    companion object{
-        fun newInstance(): AddTaskFragmentDialog {
-            return AddTaskFragmentDialog()
-        }
+    companion object {
+        fun newInstance(): AddTaskFragmentDialog = AddTaskFragmentDialog()
     }
 }

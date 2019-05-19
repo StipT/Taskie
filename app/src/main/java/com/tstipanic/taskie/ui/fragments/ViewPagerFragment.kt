@@ -10,11 +10,7 @@ import kotlinx.android.synthetic.main.fragment_pager.*
 
 class ViewPagerFragment: BaseFragment() {
 
-
-
     override fun getLayoutResourceId(): Int = R.layout.fragment_pager
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
