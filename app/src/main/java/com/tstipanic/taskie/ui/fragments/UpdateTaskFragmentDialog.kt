@@ -16,6 +16,7 @@ import com.tstipanic.taskie.model.data.BackendTask
 import com.tstipanic.taskie.model.data.PriorityColor
 import com.tstipanic.taskie.model.request.UpdateTaskRequest
 import com.tstipanic.taskie.networking.BackendFactory
+import com.tstipanic.taskie.persistance.db.TaskRoomRepository
 import kotlinx.android.synthetic.main.fragment_dialog_new_task.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +27,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
 
     private var taskUpdatedListener: TaskUpdatedListener? = null
     private val interactor = BackendFactory.getTaskieInteractor()
+    private val repository by lazy { TaskRoomRepository() }
     var taskId: String = ""
     lateinit var task: BackendTask
 
@@ -87,8 +89,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
         val priority = prioritySelector.selectedItemPosition + 1
         clearUi()
         interactor.editNote(UpdateTaskRequest(taskId, title, description, priority), updateTaskCallback())
-
-
+        repository.updateTask(BackendTask(title = title, content = description, taskPriority = priority))
     }
 
     private fun updateTaskCallback() = object : Callback<BackendTask> {

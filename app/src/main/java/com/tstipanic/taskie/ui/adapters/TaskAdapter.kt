@@ -15,6 +15,10 @@ class TaskAdapter(private val onItemSelected: (BackendTask) -> Unit) : RecyclerV
         return TaskHolder(v)
     }
 
+
+    fun getTask(position: Int): BackendTask {
+        return data[position]
+    }
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
