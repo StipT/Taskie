@@ -4,13 +4,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.tstipanic.taskie.model.Task
+import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.PriorityColor
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_task.view.*
 
 class TaskHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bindData(task: Task, onItemSelected: (Task) -> Unit) {
+    fun bindData(task: BackendTask, onItemSelected: (BackendTask) -> Unit) {
 
         containerView.setOnClickListener { onItemSelected(task) }
 
@@ -18,6 +19,12 @@ class TaskHolder(override val containerView: View) : RecyclerView.ViewHolder(con
 
         val drawable = containerView.taskPriority.drawable
         val wrapDrawable = DrawableCompat.wrap(drawable)
-        DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(containerView.context, task.priority.getColor()))
+        val priorityColor = when (task.taskPriority) {
+            1 -> PriorityColor.LOW
+            2 -> PriorityColor.MEDIUM
+            else -> PriorityColor.HIGH
+        }
+
+        DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(containerView.context, priorityColor.getColor()))
     }
 }

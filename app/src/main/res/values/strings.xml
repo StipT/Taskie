@@ -17,4 +17,19 @@
     <string name="about_me_test_string">This is page about me</string>
     <string name="about_me_text">My name is Tomislav and i make apps...</string>
     <string name="about_app">This is my app... It\'s called Taskie</string>
+    <string name="update_nutton_text">Update</string>
+    <string name="delete_all_title">Delete all</string>
+    <string name="priority_sort_title">Pirority Sort</string>
+    <string name="delete_alert_title">Are you sure?</string>
+    <string name="delete_alert_message">Do you want to proceed with the deletion?</string>
+    <string name="delete_alert_positive_button">Yes</string>
+    <string name="delete_alert_cancel">Cancel</string>
+    <string name="updateTaskHeadingText">Update Task</string>
+    <string name="hint_email">email</string>
+    <string name="hint_password">password</string>
+    <string name="login">Login</string>
+    <string name="goToRegister">Not a member? Sign up now.</string>
+    <string name="goTologin">Already registered? Login.</string>
+    <string name="register">Register</string>
+    <string name="hint_name">name</string>
 </resources>

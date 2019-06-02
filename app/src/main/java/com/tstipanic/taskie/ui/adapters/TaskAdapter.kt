@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tstipanic.taskie.R
-import com.tstipanic.taskie.model.Task
+import com.tstipanic.taskie.model.data.BackendTask
 
-class TaskAdapter(private val onItemSelected: (Task) -> Unit) : RecyclerView.Adapter<TaskHolder>() {
+class TaskAdapter(private val onItemSelected: (BackendTask) -> Unit) : RecyclerView.Adapter<TaskHolder>() {
 
-    private val data: MutableList<Task> = mutableListOf()
+    private val data: MutableList<BackendTask> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
@@ -21,9 +21,14 @@ class TaskAdapter(private val onItemSelected: (Task) -> Unit) : RecyclerView.Ada
         holder.bindData(data[position], onItemSelected)
     }
 
-    fun setData(data: MutableList<Task>) {
+    fun setData(data: MutableList<BackendTask>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()
+    }
+
+    fun removeItem(adapterPosition: Int) {
+        data.removeAt(adapterPosition)
+        notifyItemRemoved(adapterPosition)
     }
 }

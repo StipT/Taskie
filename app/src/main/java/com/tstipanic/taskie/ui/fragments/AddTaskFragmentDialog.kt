@@ -9,19 +9,28 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.tstipanic.taskie.R
+import com.tstipanic.taskie.common.RESPONSE_OK
 import com.tstipanic.taskie.common.displayToast
-import com.tstipanic.taskie.model.Priority
-import com.tstipanic.taskie.model.Task
-import com.tstipanic.taskie.persistance.Repository
+import com.tstipanic.taskie.common.priorityFactory
+import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.Priority
+import com.tstipanic.taskie.model.request.AddTaskRequest
+import com.tstipanic.taskie.networking.BackendFactory
+import com.tstipanic.taskie.persistance.db.TaskRoomRepository
 import kotlinx.android.synthetic.main.fragment_dialog_new_task.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AddTaskFragmentDialog : DialogFragment() {
 
     private var taskAddedListener: TaskAddedListener? = null
-    private val repository = Repository
+    private val repository = TaskRoomRepository()
+    private val interactor by lazy { BackendFactory.getTaskieInteractor() }
+
 
     interface TaskAddedListener {
-        fun onTaskAdded(task: Task)
+        fun onTaskAdded(task: BackendTask)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,14 +78,35 @@ class AddTaskFragmentDialog : DialogFragment() {
 
         val title = newTaskTitleInput.text.toString()
         val description = newTaskDescriptionInput.text.toString()
-        val priority = prioritySelector.selectedItem as Priority
-        val task = repository.save(title, description, priority)
+        val priority = prioritySelector.priorityFactory().getValue()
+        interactor.save(AddTaskRequest(title, description, priority), addTaskCallback())
 
         clearUi()
 
+    }
+
+    private fun addTaskCallback(): Callback<BackendTask> = object : Callback<BackendTask> {
+        override fun onFailure(call: Call<BackendTask>?, t: Throwable?) {
+            //TODO : handle default error
+        }
+
+        override fun onResponse(call: Call<BackendTask>?, response: Response<BackendTask>) {
+            if (response.isSuccessful) {
+                when (response.code()) {
+                    RESPONSE_OK -> handleOkResponse(response.body())
+                    else -> handleSomethingWentWrong()
+                }
+            }
+        }
+    }
+
+    private fun onTaskiesReceived(task: BackendTask) {
         taskAddedListener?.onTaskAdded(task)
         dismiss()
     }
+
+    private fun handleOkResponse(task: BackendTask?) = task?.run { onTaskiesReceived(this) }
+    private fun handleSomethingWentWrong() = this.activity?.displayToast("Something went wrong!")
 
     private fun clearUi() {
         newTaskTitleInput.text.clear()
