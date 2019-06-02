@@ -15,7 +15,7 @@ class ContainerActivity: BaseActivity() {
     override fun setUpUi() {
         bottomNav.gone()
         val screenType = intent.getStringExtra(EXTRA_SCREEN_TYPE)
-        val id = intent.getIntExtra(EXTRA_TASK_ID, -1)
+        val id = intent.getStringExtra(EXTRA_TASK_ID)
         if (screenType.isNotEmpty()) {
             when (screenType) {
                 SCREEN_TASK_DETAILS -> showFragment(TaskDetailsFragment.newInstance(id))
