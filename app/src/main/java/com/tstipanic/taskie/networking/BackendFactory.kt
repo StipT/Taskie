@@ -2,8 +2,8 @@ package com.tstipanic.taskie.networking
 
 import com.tstipanic.taskie.common.BASE_URL
 import com.tstipanic.taskie.common.KEY_AUTHORIZATION
-import com.tstipanic.taskie.networking.interactor.Interactor
-import com.tstipanic.taskie.networking.interactor.InteractorImpl
+import com.tstipanic.taskie.model.interactor.Interactor
+import com.tstipanic.taskie.model.interactor.InteractorImpl
 import com.tstipanic.taskie.prefs.SharedPrefsHelper
 import com.tstipanic.taskie.prefs.provideSharedPrefs
 import okhttp3.Interceptor

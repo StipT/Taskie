@@ -20,7 +20,8 @@ class TaskRoomRepository : TaskRepository {
 
     override fun insertTask(task: BackendTask) = taskDao.insertTask(task)
 
-    override fun updateTask(task: BackendTask) = taskDao.updateTask(task)
+    override fun updateTask(id: String, title: String, content: String, priority: Int) =
+        taskDao.updateTask(id, title, content, priority)
 
     override fun deleteTask(task: BackendTask) = taskDao.deleteTask(task)
 }

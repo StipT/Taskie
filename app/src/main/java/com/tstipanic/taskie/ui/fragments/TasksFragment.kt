@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tstipanic.taskie.R
 import com.tstipanic.taskie.SwipeCallback
-import com.tstipanic.taskie.common.*
+import com.tstipanic.taskie.common.EXTRA_SCREEN_TYPE
+import com.tstipanic.taskie.common.EXTRA_TASK_ID
+import com.tstipanic.taskie.common.RESPONSE_OK
+import com.tstipanic.taskie.common.displayToast
 import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.response.DeleteTaskResponse
 import com.tstipanic.taskie.model.response.GetTasksResponse
 import com.tstipanic.taskie.networking.BackendFactory
 import com.tstipanic.taskie.persistance.db.TaskRoomRepository
@@ -44,15 +48,15 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         initUi()
-        initListeners()
+
         refreshTasks()
     }
 
     private fun initUi() {
-        progress.visible()
         tasksRecyclerView.layoutManager = LinearLayoutManager(context)
         tasksRecyclerView.adapter = adapter
         configureSwipeRefresh()
+        addTask.setOnClickListener { addTask() }
         ItemTouchHelper(SwipeCallback(context, adapter)).attachToRecyclerView(tasksRecyclerView)
     }
 
@@ -64,13 +68,10 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
         }
     }
 
-    private fun initListeners() {
-        addTask.setOnClickListener { addTask() }
-    }
 
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        adapter.setData(repository.getAll().toMutableList())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -79,28 +80,39 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.delete_all -> {
-                deleteAlert()
-                return true
-            }
-            R.id.priority_sort -> {
-                prioritySort()
-                return true
-            }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.delete_all -> {
+            deleteAlert()
         }
-        return super.onOptionsItemSelected(item)
+        R.id.priority_sort -> {
+            prioritySort()
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
 
-    private fun prioritySort() {
+    private fun prioritySort(): Boolean {
         adapter.setData(repository.orderTaskByPriotity().toMutableList())
+        return true
     }
 
     private fun deleteAll() {
         repository.deleteAll()
+        for (task: BackendTask in adapter.getData()) {
+            interactor.delete(task.id, deleteTaskCallback())
+        }
+
         refreshTasks()
+    }
+
+    private fun deleteTaskCallback() = object : Callback<DeleteTaskResponse> {
+        override fun onFailure(call: Call<DeleteTaskResponse>, t: Throwable) {
+            Log.e("deleteTaskCallback", "Delettion failed")
+        }
+
+        override fun onResponse(call: Call<DeleteTaskResponse>, response: Response<DeleteTaskResponse>) {
+            Log.e("deleteTaskCallback", "Delettion failed  " + response.body())
+        }
     }
 
     private fun onItemSelected(task: BackendTask) {
@@ -112,9 +124,7 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
     }
 
     private fun refreshTasks() {
-        progress.gone()
         interactor.getTasks(getTaskieCallback())
-
     }
 
     private fun getTaskieCallback(): Callback<GetTasksResponse> = object : Callback<GetTasksResponse> {
@@ -135,6 +145,9 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
     private fun handleOkResponse(response: Response<GetTasksResponse>) {
         response.body()?.notes?.run {
             adapter.setData(this)
+//            for(task: BackendTask in this) {
+//                repository.insertTask(task)
+//            }
         }
     }
 
@@ -151,7 +164,7 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
         refreshTasks()
     }
 
-    fun deleteAlert() {
+    private fun deleteAlert(): Boolean {
         val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.myDialog))
         builder.setTitle(getString(R.string.delete_alert_title))
         builder.setMessage(getString(R.string.delete_alert_message))
@@ -162,6 +175,7 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
 
         builder.setNegativeButton(getString(R.string.delete_alert_cancel), { _, _ -> DialogInterface.BUTTON_NEGATIVE })
         builder.show()
+        return true
     }
 
 

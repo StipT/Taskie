@@ -16,7 +16,6 @@ import com.tstipanic.taskie.model.data.BackendTask
 import com.tstipanic.taskie.model.data.Priority
 import com.tstipanic.taskie.model.request.AddTaskRequest
 import com.tstipanic.taskie.networking.BackendFactory
-import com.tstipanic.taskie.persistance.db.TaskRoomRepository
 import kotlinx.android.synthetic.main.fragment_dialog_new_task.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +24,6 @@ import retrofit2.Response
 class AddTaskFragmentDialog : DialogFragment() {
 
     private var taskAddedListener: TaskAddedListener? = null
-    private val repository = TaskRoomRepository()
     private val interactor by lazy { BackendFactory.getTaskieInteractor() }
 
 
@@ -56,18 +54,14 @@ class AddTaskFragmentDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        initListeners()
     }
 
     private fun initUi() {
+        saveTaskAction.setOnClickListener { saveTask() }
         context?.let {
             prioritySelector.adapter = ArrayAdapter<Priority>(it, R.layout.support_simple_spinner_dropdown_item, Priority.values())
             prioritySelector.setSelection(0)
         }
-    }
-
-    private fun initListeners() {
-        saveTaskAction.setOnClickListener { saveTask() }
     }
 
     private fun saveTask() {

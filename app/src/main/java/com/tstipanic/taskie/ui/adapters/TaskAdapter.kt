@@ -35,4 +35,6 @@ class TaskAdapter(private val onItemSelected: (BackendTask) -> Unit) : RecyclerV
         data.removeAt(adapterPosition)
         notifyItemRemoved(adapterPosition)
     }
+
+    fun getData(): List<BackendTask> = data
 }

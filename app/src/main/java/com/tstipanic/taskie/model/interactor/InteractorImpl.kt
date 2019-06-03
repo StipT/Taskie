@@ -1,4 +1,4 @@
-package com.tstipanic.taskie.networking.interactor
+package com.tstipanic.taskie.model.interactor
 
 import com.tstipanic.taskie.model.data.BackendTask
 import com.tstipanic.taskie.model.request.AddTaskRequest

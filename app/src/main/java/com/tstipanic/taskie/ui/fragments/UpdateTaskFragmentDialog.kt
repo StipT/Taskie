@@ -89,7 +89,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
         val priority = prioritySelector.selectedItemPosition + 1
         clearUi()
         interactor.editNote(UpdateTaskRequest(taskId, title, description, priority), updateTaskCallback())
-        repository.updateTask(BackendTask(title = title, content = description, taskPriority = priority))
+        repository.updateTask(taskId, title, description, priority)
     }
 
     private fun updateTaskCallback() = object : Callback<BackendTask> {

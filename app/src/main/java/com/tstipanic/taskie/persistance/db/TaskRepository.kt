@@ -15,7 +15,7 @@ interface TaskRepository {
 
     fun insertTask(task: BackendTask)
 
-    fun updateTask(task: BackendTask)
+    fun updateTask(id: String, title: String, content: String, priority: Int)
 
     fun deleteTask(task: BackendTask)
 }
