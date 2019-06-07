@@ -71,7 +71,7 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
 
     override fun onResume() {
         super.onResume()
-        adapter.setData(repository.getAll().toMutableList())
+        refreshTasks()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -101,8 +101,7 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
         for (task: BackendTask in adapter.getData()) {
             interactor.delete(task.id, deleteTaskCallback())
         }
-
-        refreshTasks()
+        adapter.setData(repository.getAll().toMutableList())
     }
 
     private fun deleteTaskCallback() = object : Callback<DeleteTaskResponse> {
@@ -145,9 +144,9 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
     private fun handleOkResponse(response: Response<GetTasksResponse>) {
         response.body()?.notes?.run {
             adapter.setData(this)
-//            for(task: BackendTask in this) {
-//                repository.insertTask(task)
-//            }
+            for (task: BackendTask in this) {
+                repository.insertTask(task)
+            }
         }
     }
 

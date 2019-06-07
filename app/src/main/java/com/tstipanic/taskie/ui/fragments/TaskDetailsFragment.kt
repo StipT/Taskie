@@ -9,7 +9,6 @@ import com.tstipanic.taskie.common.RESPONSE_OK
 import com.tstipanic.taskie.common.displayToast
 import com.tstipanic.taskie.model.data.BackendTask
 import com.tstipanic.taskie.model.data.PriorityColor
-import com.tstipanic.taskie.networking.BackendFactory
 import com.tstipanic.taskie.persistance.db.TaskRoomRepository
 import com.tstipanic.taskie.ui.fragments.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_task_details.*
@@ -19,7 +18,6 @@ import retrofit2.Response
 
 class TaskDetailsFragment : BaseFragment(), UpdateTaskFragmentDialog.TaskUpdatedListener {
 
-    private val interactor = BackendFactory.getTaskieInteractor()
     private val repository = TaskRoomRepository()
     private var taskID = NO_TASK
 

@@ -18,3 +18,4 @@ const val KEY_AUTHORIZATION = "authorization"
 
 const val KEY_USER_TOKEN = "user_token"
 const val PREFERENCES_NAME = "taskie_prefs"
+const val PRIORITY_PREF = "PRIORITY_PREF"

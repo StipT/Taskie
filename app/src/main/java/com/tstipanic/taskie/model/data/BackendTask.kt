@@ -13,5 +13,6 @@ data class BackendTask(
     @SerializedName("content") val content: String = "",
     @SerializedName("isFavorite") val isFavorite: Boolean = false,
     @SerializedName("taskPriority") val taskPriority: Int = 0,
-    @SerializedName("isCompleted") val isCompleted: Boolean = false
+    @SerializedName("isCompleted") val isCompleted: Boolean = false,
+    val isSent: Boolean = false
 )

@@ -16,6 +16,7 @@ import com.tstipanic.taskie.model.data.BackendTask
 import com.tstipanic.taskie.model.data.Priority
 import com.tstipanic.taskie.model.request.AddTaskRequest
 import com.tstipanic.taskie.networking.BackendFactory
+import com.tstipanic.taskie.persistance.SharedPrefs
 import kotlinx.android.synthetic.main.fragment_dialog_new_task.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,7 +61,7 @@ class AddTaskFragmentDialog : DialogFragment() {
         saveTaskAction.setOnClickListener { saveTask() }
         context?.let {
             prioritySelector.adapter = ArrayAdapter<Priority>(it, R.layout.support_simple_spinner_dropdown_item, Priority.values())
-            prioritySelector.setSelection(0)
+            prioritySelector.setSelection(SharedPrefs.getInt())
         }
     }
 
@@ -73,6 +74,7 @@ class AddTaskFragmentDialog : DialogFragment() {
         val title = newTaskTitleInput.text.toString()
         val description = newTaskDescriptionInput.text.toString()
         val priority = prioritySelector.priorityFactory().getValue()
+        SharedPrefs.store(priority - 1)
         interactor.save(AddTaskRequest(title, description, priority), addTaskCallback())
 
         clearUi()

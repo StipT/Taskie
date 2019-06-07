@@ -7,4 +7,8 @@ interface SharedPrefsHelper {
     fun storeUserToken(token: String)
 
     fun clearUserToken()
+
+    fun storeLastPriority(position: Int)
+
+    fun getLastPriority(): Int
 }
