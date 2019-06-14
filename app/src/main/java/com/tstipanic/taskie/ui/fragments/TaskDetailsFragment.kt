@@ -1,6 +1,7 @@
 package com.tstipanic.taskie.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.tstipanic.taskie.R
 import com.tstipanic.taskie.Taskie.Companion.instance
@@ -27,8 +28,8 @@ class TaskDetailsFragment : BaseFragment(), UpdateTaskFragmentDialog.TaskUpdated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getString(EXTRA_TASK_ID)?.let { taskID = it }
-        tryDisplayTask(taskID)
         updateButton.setOnClickListener { updateTask(taskID) }
+        tryDisplayTask(taskID)
     }
 
     private fun updateTask(taskID: String) {
@@ -47,8 +48,16 @@ class TaskDetailsFragment : BaseFragment(), UpdateTaskFragmentDialog.TaskUpdated
         }
     }
 
-    override fun onTaskUpdated(task: BackendTask) {
-        tryDisplayTask(taskID)
+    override fun onResume() {
+
+        super.onResume()
+
+    }
+
+    override fun onTaskUpdated(task: BackendTask?) {
+        if (task != null) {
+            tryDisplayTask(taskID)
+        }
     }
 
     private fun getTaskCallback(): Callback<BackendTask> = object : Callback<BackendTask> {
@@ -79,6 +88,7 @@ class TaskDetailsFragment : BaseFragment(), UpdateTaskFragmentDialog.TaskUpdated
                     else -> PriorityColor.HIGH.getColor()
                 }
             )
+
         }
 
     }
@@ -86,7 +96,9 @@ class TaskDetailsFragment : BaseFragment(), UpdateTaskFragmentDialog.TaskUpdated
 
     private fun displayTask(task: BackendTask) {
         detailsTaskTitle.text = task.title
+        Log.d("Display", task.title)
         detailsTaskDescription.text = task.content
+        Log.d("Display", task.content)
         detailsPriorityView.setBackgroundResource(
             when (task.taskPriority) {
                 1 -> PriorityColor.LOW.getColor()

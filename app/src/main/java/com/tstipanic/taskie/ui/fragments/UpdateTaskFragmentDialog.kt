@@ -38,7 +38,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
     }
 
     interface TaskUpdatedListener {
-        fun onTaskUpdated(task: BackendTask)
+        fun onTaskUpdated(task: BackendTask?)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +61,9 @@ class UpdateTaskFragmentDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        interactor.getTask(taskId, getTaskCallback())
+        fillFields(repository.getTask(taskId))
+
+        //interactor.getTask(taskId, getTaskCallback())
         initUi()
         initListeners()
     }
@@ -72,6 +74,13 @@ class UpdateTaskFragmentDialog : DialogFragment() {
                 ArrayAdapter<PriorityColor>(it, android.R.layout.simple_spinner_dropdown_item, PriorityColor.values())
             prioritySelector.setSelection(0)
         }
+
+    }
+
+    fun fillFields(task: BackendTask) {
+        newTaskTitleInput.setText(task.title)
+        newTaskDescriptionInput.setText(task.content)
+        prioritySelector.setSelection(task.taskPriority - 1)
 
     }
 
@@ -94,7 +103,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
 
     private fun updateTaskCallback() = object : Callback<BackendTask> {
         override fun onFailure(call: Call<BackendTask>, t: Throwable) {
-
+            onTaskiesUpdated(repository.getTask(taskId))
         }
 
         override fun onResponse(call: Call<BackendTask>, response: Response<BackendTask>) {
@@ -109,8 +118,10 @@ class UpdateTaskFragmentDialog : DialogFragment() {
     }
 
     private fun handleSomethingWentWrong2() {
+        onTaskiesUpdated(repository.getTask(taskId))
 
     }
+
 
     private fun handleOkResponse2(response: Response<BackendTask>) {
         response.body()?.run {
@@ -118,7 +129,7 @@ class UpdateTaskFragmentDialog : DialogFragment() {
         }
     }
 
-    private fun onTaskiesUpdated(backendTask: BackendTask) {
+    private fun onTaskiesUpdated(backendTask: BackendTask?) {
         taskUpdatedListener?.onTaskUpdated(backendTask)
         dismiss()
     }

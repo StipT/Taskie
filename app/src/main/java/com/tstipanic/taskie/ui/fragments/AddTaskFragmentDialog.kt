@@ -75,6 +75,14 @@ class AddTaskFragmentDialog : DialogFragment() {
         val description = newTaskDescriptionInput.text.toString()
         val priority = prioritySelector.priorityFactory().getValue()
         SharedPrefs.store(priority - 1)
+        taskAddedListener?.onTaskAdded(
+            BackendTask(
+                id = title.plus(description.hashCode()),
+                title = title,
+                content = description,
+                taskPriority = priority
+            )
+        )
         interactor.save(AddTaskRequest(title, description, priority), addTaskCallback())
 
         clearUi()
@@ -83,7 +91,7 @@ class AddTaskFragmentDialog : DialogFragment() {
 
     private fun addTaskCallback(): Callback<BackendTask> = object : Callback<BackendTask> {
         override fun onFailure(call: Call<BackendTask>?, t: Throwable?) {
-            //TODO : handle default error
+            onTaskiesNotReceived()
         }
 
         override fun onResponse(call: Call<BackendTask>?, response: Response<BackendTask>) {
@@ -96,13 +104,21 @@ class AddTaskFragmentDialog : DialogFragment() {
         }
     }
 
+    private fun onTaskiesNotReceived() {
+        dismiss()
+    }
+
     private fun onTaskiesReceived(task: BackendTask) {
         taskAddedListener?.onTaskAdded(task)
         dismiss()
     }
 
     private fun handleOkResponse(task: BackendTask?) = task?.run { onTaskiesReceived(this) }
-    private fun handleSomethingWentWrong() = this.activity?.displayToast("Something went wrong!")
+    private fun handleSomethingWentWrong() {
+        this.activity?.displayToast("Something went wrong!")
+        onTaskiesNotReceived()
+
+    }
 
     private fun clearUi() {
         newTaskTitleInput.text.clear()

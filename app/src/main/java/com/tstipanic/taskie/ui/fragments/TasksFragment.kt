@@ -129,6 +129,8 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
     private fun getTaskieCallback(): Callback<GetTasksResponse> = object : Callback<GetTasksResponse> {
         override fun onFailure(call: Call<GetTasksResponse>, t: Throwable) {
             Log.d("GetTasksResponse", "Failed")
+            adapter.setData(repository.getAll().toMutableList())
+
         }
 
         override fun onResponse(call: Call<GetTasksResponse>, response: Response<GetTasksResponse>) {
@@ -150,7 +152,10 @@ class TasksFragment : BaseFragment(), AddTaskFragmentDialog.TaskAddedListener {
         }
     }
 
-    private fun handleSomethingWentWrong() = this.activity?.displayToast("Something went wrong!")
+    private fun handleSomethingWentWrong() {
+        this.activity?.displayToast("Something went wrong!")
+        adapter.setData(repository.getAll().toMutableList())
+    }
 
     private fun addTask() {
         val dialog = AddTaskFragmentDialog.newInstance()
