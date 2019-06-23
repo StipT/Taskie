@@ -1,6 +1,6 @@
 package com.tstipanic.taskie.model.interactor
 
-import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.Task
 import com.tstipanic.taskie.model.request.AddTaskRequest
 import com.tstipanic.taskie.model.request.UpdateTaskRequest
 import com.tstipanic.taskie.model.request.UserDataRequest
@@ -25,11 +25,11 @@ class InteractorImpl(private val apiService: ApiService) : Interactor {
         apiService.login(request).enqueue(loginCallback)
     }
 
-    override fun save(request: AddTaskRequest, saveCallback: Callback<BackendTask>) {
+    override fun save(request: AddTaskRequest, saveCallback: Callback<Task>) {
         apiService.save(request).enqueue(saveCallback)
     }
 
-    override fun getTask(userId: String, getTaskCallback: Callback<BackendTask>) {
+    override fun getTask(userId: String, getTaskCallback: Callback<Task>) {
         apiService.getTask(userId).enqueue(getTaskCallback)
     }
 
@@ -37,7 +37,7 @@ class InteractorImpl(private val apiService: ApiService) : Interactor {
         apiService.deleteTask(id).enqueue(getDeleteTaskCallback)
     }
 
-    override fun editNote(request: UpdateTaskRequest, updateTaskCallback: Callback<BackendTask>) {
+    override fun editNote(request: UpdateTaskRequest, updateTaskCallback: Callback<Task>) {
         apiService.editNote(request).enqueue(updateTaskCallback)
     }
 }

@@ -1,6 +1,6 @@
 package com.tstipanic.taskie.model.interactor
 
-import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.Task
 import com.tstipanic.taskie.model.request.AddTaskRequest
 import com.tstipanic.taskie.model.request.UpdateTaskRequest
 import com.tstipanic.taskie.model.request.UserDataRequest
@@ -18,11 +18,11 @@ interface Interactor {
 
     fun login(request: UserDataRequest, loginCallback: Callback<LoginResponse>)
 
-    fun save(request: AddTaskRequest, saveCallback: Callback<BackendTask>)
+    fun save(request: AddTaskRequest, saveCallback: Callback<Task>)
 
-    fun getTask(userId: String, getTaskCallback: Callback<BackendTask>)
+    fun getTask(userId: String, getTaskCallback: Callback<Task>)
 
     fun delete(id: String, getDeleteTaskCallback: Callback<DeleteTaskResponse>)
 
-    fun editNote(request: UpdateTaskRequest, updateTaskCallback: Callback<BackendTask>)
+    fun editNote(request: UpdateTaskRequest, updateTaskCallback: Callback<Task>)
 }

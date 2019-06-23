@@ -1,6 +1,6 @@
 package com.tstipanic.taskie.networking
 
-import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.Task
 import com.tstipanic.taskie.model.request.AddTaskRequest
 import com.tstipanic.taskie.model.request.UpdateTaskRequest
 import com.tstipanic.taskie.model.request.UserDataRequest
@@ -22,14 +22,14 @@ interface ApiService {
     fun getTasks(): Call<GetTasksResponse>
 
     @POST("/api/note")
-    fun save(@Body taskData: AddTaskRequest): Call<BackendTask>
+    fun save(@Body taskData: AddTaskRequest): Call<Task>
 
     @GET("/api/note/{someId}")
-    fun getTask(@Path("someId") someId: String): Call<BackendTask>
+    fun getTask(@Path("someId") someId: String): Call<Task>
 
     @POST("/api/note/delete")
     fun deleteTask(@Query("id") id: String): Call<DeleteTaskResponse>
 
     @POST("/api/note/edit")
-    fun editNote(@Body updateTaskRequest: UpdateTaskRequest): Call<BackendTask>
+    fun editNote(@Body updateTaskRequest: UpdateTaskRequest): Call<Task>
 }

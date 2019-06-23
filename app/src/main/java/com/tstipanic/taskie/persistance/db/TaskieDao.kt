@@ -3,34 +3,42 @@ package com.tstipanic.taskie.persistance.db
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.tstipanic.taskie.model.data.BackendTask
+import com.tstipanic.taskie.model.data.Task
 
 @Dao
 interface TaskieDao {
-    @Query("SELECT * FROM BackendTask")
-    fun getAll(): List<BackendTask>
+    @Query("SELECT * FROM Task WHERE isDeleted = 0")
+    fun getAll(): List<Task>
 
-    @Query("DELETE FROM BackendTask")
+    @Query("DELETE  FROM Task")
     fun deleteAll()
 
-    @Query("SELECT * FROM BackendTask ORDER BY taskPriority DESC")
-    fun orderTaskByPriotity(): List<BackendTask>
+    @Query("UPDATE Task SET isDeleted = 1 WHERE id = :id")
+    fun markAsDeleted(id: String)
 
-    @Insert(onConflict = IGNORE)
-    fun insertTask(task: BackendTask)
+    @Query("SELECT * FROM Task WHERE isDeleted = 1")
+    fun getMarkedAsDeletedList(): List<Task>
+
+    @Query("SELECT * FROM Task ORDER BY taskPriority DESC")
+    fun orderTaskByPriotity(): List<Task>
+
+    @Query("SELECT * FROM Task WHERE isSent == 0")
+    fun getUnsentTasks(): List<Task>
 
     @Insert(onConflict = REPLACE)
-    fun storeAll(list: List<BackendTask>)
+    fun insertTask(task: Task)
 
-    @Query("SELECT * FROM BackendTask WHERE id = :id")
-    fun getTask(id: String): BackendTask
+    @Insert(onConflict = REPLACE)
+    fun storeAll(list: List<Task>)
 
-    @Query("UPDATE BackendTask SET title = :title, content = :content, taskPriority = :priority WHERE id = :id")
+    @Query("SELECT * FROM Task WHERE id = :id")
+    fun getTask(id: String): Task
+
+    @Query("UPDATE Task SET title = :title, content = :content, taskPriority = :priority WHERE id = :id")
     fun updateTask(id: String, title: String, content: String, priority: Int)
 
     @Delete
-    fun deleteTask(task: BackendTask)
+    fun deleteTask(task: Task)
 }

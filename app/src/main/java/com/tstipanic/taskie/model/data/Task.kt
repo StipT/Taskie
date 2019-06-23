@@ -2,12 +2,18 @@ package com.tstipanic.taskie.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Task(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-    val title: String,
-    val description: String,
-    val priority: Priority
+    @PrimaryKey
+    @SerializedName("id") val id: String = "",
+    @SerializedName("userId") val userId: String = "",
+    @SerializedName("title") val title: String = "",
+    @SerializedName("content") val content: String = "",
+    @SerializedName("isFavorite") val isFavorite: Boolean = false,
+    @SerializedName("taskPriority") val taskPriority: Int = 0,
+    @SerializedName("isCompleted") val isCompleted: Boolean = false,
+    var isSent: Boolean = true,
+    var isDeleted: Boolean = false
 )

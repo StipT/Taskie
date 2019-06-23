@@ -16,7 +16,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-                android:name=".ui.activities.SplashActivity"
+                android:name=".ui.auth_screen.SplashActivity"
                 android:theme="@style/SplashTheme"
                 android:screenOrientation="portrait">
             <intent-filter>
@@ -26,19 +26,19 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.activities.ContainerActivity"
+                android:name=".ui.details_screen.activity.ContainerActivity"
                 android:screenOrientation="portrait">
         </activity>
 
         <activity
-                android:name=".ui.activities.MainActivity"
+                android:name=".ui.task_list_screen.activity.MainActivity"
                 android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".ui.activities.RegisterActivity"
+        <activity android:name=".ui.auth_screen.register.RegisterActivity"
                   android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.activities.LoginActivity"/>
+        <activity android:name=".ui.auth_screen.login.LoginActivity"/>
 
     </application>
 </manifest>

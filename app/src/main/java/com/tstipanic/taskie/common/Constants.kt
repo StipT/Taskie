@@ -15,6 +15,8 @@ const val SERVER_ERROR = 500
 const val BASE_URL = "https://authenticationexample.herokuapp.com/"
 const val KEY_AUTHORIZATION = "authorization"
 
+const val LOGGING_INTERCEPTOR = "logging"
+const val AUTH_INTERCEPTOR = "auth"
 
 const val KEY_USER_TOKEN = "user_token"
 const val PREFERENCES_NAME = "taskie_prefs"
